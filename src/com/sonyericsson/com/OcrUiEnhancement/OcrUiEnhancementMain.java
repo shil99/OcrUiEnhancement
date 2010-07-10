@@ -3,17 +3,24 @@ package com.sonyericsson.com.OcrUiEnhancement;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.os.Handler;
 import android.os.Message;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
+import android.view.Gravity;
 
-public class OcrUiEnhancementMain extends Activity {
+public class OcrUiEnhancementMain 
+		extends Activity implements WorkerThreadListener, View.OnClickListener {
 	public static final int TRANSLATE_COMPLETED = 23; 
 	private static final String TAG = "OcrUiEnhancementMain";
-	private GoogleTranslateTest mTranslateTest = null;
+	private WorkerThreadTest mWorkerTest = null;
 	private Button mTranslateBtn = null;
-	private Handler mHandler = null;
+	private Button mTranslateBtn2 = null;
+	private Button mSearchBtn = null;
+	private Toast mToast = null;
+	
+	private WorkerThreadHandler mWorkerThreadHandler = new WorkerThreadHandler();
 	
     /** Called when the activity is first created. */
     @Override
@@ -21,63 +28,101 @@ public class OcrUiEnhancementMain extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        // start google query 
-        GoogleQuery.makeQuery("gsearch-java-client");
-        // create handler
-        mHandler = new Handler() 
-        {
-        	@Override
-        	public void handleMessage(Message msg) 
-        	{
-        		switch(msg.what) 
-        		{
-        		case TRANSLATE_COMPLETED:
-        			Log.d(TAG,"handleMessage(), receive GoogleTranslateTest.TRANSLATE_COMPLETED.");
-        			stopTranslate();
-        			break;
-        		default:
-        			super.handleMessage(msg);
-        		}
-        	} // handleMessage
-        };
-        
         // create Translate
-        mTranslateTest = new GoogleTranslateTest(this);
-        
+        mWorkerTest = new WorkerThreadTest(this);
+
+        // TODO: how to set the two buttons the same size in one line
         // set translate button
         mTranslateBtn = (Button)findViewById(R.id.translate_test);
         mTranslateBtn.setText(R.string.start_translate);
-        mTranslateBtn.setOnClickListener(new View.OnClickListener() 
-        {
-			public void onClick(View v) {
-				// start translate test
-				if(mTranslateBtn.getText() == getString(R.string.start_translate))
-				{
-					startTranslate();
-				} 
-				else 
-				{
-					stopTranslate();
-				}
-			}
-		} // View.OnClickListener()
-        );
+        mTranslateBtn.setOnClickListener(this);
+
+        // set translate button
+        mTranslateBtn2 = (Button)findViewById(R.id.translate_test_2);
+        mTranslateBtn2.setText(R.string.start_translate);
+        mTranslateBtn2.setOnClickListener(this);
+
+        // set translate button
+        mSearchBtn = (Button)findViewById(R.id.search_test);
+        mSearchBtn.setText(R.string.start_search);
+        mSearchBtn.setOnClickListener(this);
     }
     
-    private void startTranslate() 
-    {
-		mTranslateTest.start();
-		mTranslateBtn.setText(R.string.stop_translate);
+    /**
+     * OnClickListener callback
+     */
+    public void onClick(View v) {
+		// start translate test
+    	Button btn = (Button)v;
+    	if(btn == mTranslateBtn) {
+    		// TODO: disable other button here
+    		if(mTranslateBtn.getText() == getString(R.string.start_translate)) {
+    			mWorkerTest.startTranslate(getString(R.string.translate_string));
+    			mTranslateBtn.setText(R.string.stop_translate);
+    		} else {
+    			mWorkerTest.stopTranslate();
+    			mTranslateBtn.setText(R.string.start_translate);
+    		}    	
+    	} else if(btn == mTranslateBtn2) {
+    		if(btn.getText() == getString(R.string.start_translate)) {
+    			mWorkerTest.startTranslateMsg(getString(R.string.translate_string));
+    			mTranslateBtn2.setText(R.string.translating);
+    			mTranslateBtn2.setClickable(false);
+    		}    	
+    	} else if(btn == mSearchBtn) {
+			mWorkerTest.startSearchMsg(getString(R.string.search_string));
+    	} else {
+    		Log.v(TAG, "onClick(), invalid view");
+    	}
     }
     
-    private void stopTranslate() 
+	/**
+	 * WorkerThreadHandler
+	 * Dispatch the function call from worker thread into main thread
+	 */
+	private class WorkerThreadHandler extends Handler {
+    	@Override
+    	public void handleMessage(Message msg) 
+    	{
+    		switch(msg.what) 
+    		{
+    		case TRANSLATE_COMPLETED:
+    			Log.d(TAG,"handleMessage(), receive GoogleTranslateTest.TRANSLATE_COMPLETED." + 
+    				" the translate result is: \n" + ((String)msg.obj));
+    			mWorkerTest.stopTranslate();
+    			mTranslateBtn.setText(R.string.start_translate);
+    			mTranslateBtn2.setText(R.string.start_translate);
+    			mTranslateBtn2.setClickable(true);
+    			if(mToast != null) {
+    				mToast.cancel();
+    			}
+    			StringBuilder result = new StringBuilder(256);
+    			result.append(getString(R.string.translate_string));
+    			result.append(" --> ");
+    			result.append(((String)msg.obj));
+    			
+    			mToast = Toast.makeText(OcrUiEnhancementMain.this, 
+    					result.toString(), Toast.LENGTH_LONG);
+    			mToast.setGravity(Gravity.CENTER, 0, 0);
+    			mToast.show();
+    			break;
+    		default:
+    			super.handleMessage(msg);
+    		}
+    	} // handleMessage
+	}
+    
+    /**
+     * WorkerThreadListener implementation
+     */
+    public void onTranslateCompleted(String output)
     {
-		mTranslateTest.stop();
-		mTranslateBtn.setText(R.string.start_translate);
+    	Message msg = mWorkerThreadHandler.obtainMessage(TRANSLATE_COMPLETED);
+    	msg.obj = output;
+    	mWorkerThreadHandler.sendMessage(msg);
     }
     
-    public void onTranslateCompleted()
-    {
-    	mHandler.sendMessage(mHandler.obtainMessage(TRANSLATE_COMPLETED));
-    }
+    /**
+     * 
+     */
 }

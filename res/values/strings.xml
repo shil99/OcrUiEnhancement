@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="hello">This OcrUiEnhancementMain!</string>
+    <string name="google_translate">Google Translate:</string>
     <string name="app_name">OCR UI Enhancement</string>
-    <string name="start_translate">Start Trans</string>
+    <string name="start_translate">Start Translate</string>
     <string name="stop_translate">Translating.... Stop it!</string>
+    <string name="translating">Translating....</string>
     <string name="translate_string">中国不会把外汇储备当原子武器</string>
+    <string name="google_search">Google Search:</string>
+    <string name="start_search">Start Search</string>
+    <string name="search_string">Libertyville</string>
 </resources>

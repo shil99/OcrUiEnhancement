@@ -11,17 +11,12 @@ import org.json.JSONObject;
 
 /* The source code is gotten from 
  * http://www.ajaxlines.com/ajax/stuff/article/using_google_is_ajax_search_api_with_java.php
+ * The more detailed description of google RESTful search API is here
+ * http://code.google.com/intl/zh-CN/apis/ajaxsearch/documentation/#fonje
  */
 public class GoogleQuery {
 	private static final String TAG = "GoogleQuery";
-	// Put your website here
 	private static final String HTTP_REFERER = "http://shil99.blogspot.com";
-
-	public GoogleQuery() {
-		makeQuery("gsearch-java-client");
-		//makeQuery("info:http://frankmccown.blogspot.com/");
-		//makeQuery("site:frankmccown.blogspot.com");
-	}
 
 	public static final void makeQuery(String query) {
 		Log.v(TAG, "makeQuery(), query string" + query);

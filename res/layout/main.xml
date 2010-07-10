@@ -5,14 +5,44 @@
     android:layout_height="fill_parent">
     
 	<TextView
-	android:id="@+id/text"  
-    android:layout_width="fill_parent" 
-    android:layout_height="wrap_content" 
-    android:text="@string/hello"/>
+	android:id="@+id/label_translate"  
+	android:layout_width="fill_parent" 
+	android:layout_height="wrap_content"
+	android:textSize="16.5sp"
+	android:textStyle="bold" 
+	android:layout_marginTop="12.5sp"
+	android:text="@string/google_translate"/>
+	    
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+        <Button
+		android:id="@+id/translate_test"
+		android:layout_width="wrap_content" 
+		android:layout_height="wrap_content"
+		android:text="translate test" />    
+			
+		 <Button
+		 android:id="@+id/translate_test_2"
+         android:layout_width="wrap_content" 
+         android:layout_height="wrap_content"
+		 android:text="translate test 2" />
+    </LinearLayout>
     
-    <Button
-    android:id="@+id/translate_test"
+    <TextView
+    android:id="@+id/label_search"  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
-	android:text="translate test" />    
+    android:textSize="16.5sp"
+    android:textStyle="bold" 
+    android:layout_marginTop="12.5sp"
+    android:text="@string/google_search"/>
+
+    <Button
+    android:id="@+id/search_test"
+    android:layout_width="wrap_content" 
+    android:layout_height="wrap_content"
+    android:text="search test" />    
+        
 </LinearLayout>
