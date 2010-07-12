@@ -9,4 +9,6 @@
     <string name="google_search">Google Search:</string>
     <string name="start_search">Start Search</string>
     <string name="search_string">Libertyville</string>
+    <string name="menu_camera_view">Camera View</string>
+    <string name="menu_image_view">Image View</string>
 </resources>

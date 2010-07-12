@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<AbsoluteLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_background_parent"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
     <ImageView
             android:src="@drawable/semc_poster"
+            android:id="@+id/image_background_image_view"
             android:adjustViewBounds="true"
+            android:scaleType="fitXY"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" />
            
-</FrameLayout>
+</AbsoluteLayout>

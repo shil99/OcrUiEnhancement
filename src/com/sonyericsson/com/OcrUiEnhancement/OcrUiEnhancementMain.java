@@ -6,14 +6,20 @@ import android.util.Log;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.Menu;
 import android.widget.Button;
 import android.widget.Toast;
 import android.view.Gravity;
+import android.view.MenuItem;
+import android.content.Intent;
+
 
 public class OcrUiEnhancementMain 
 		extends Activity implements WorkerThreadListener, View.OnClickListener {
 	public static final int TRANSLATE_COMPLETED = 23; 
 	private static final String TAG = "OcrUiEnhancementMain";
+	private static final int MENU_IMAGE_VIEW = 0x01;
+	private static final int MENU_CAMERA_VIEW = 0x02;
 	private WorkerThreadTest mWorkerTest = null;
 	private Button mTranslateBtn = null;
 	private Button mTranslateBtn2 = null;
@@ -47,6 +53,33 @@ public class OcrUiEnhancementMain
         mSearchBtn.setText(R.string.start_search);
         mSearchBtn.setOnClickListener(this);
     }
+    
+    /**
+     * Option menu operation
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+    	menu.add(0, MENU_IMAGE_VIEW, 0, R.string.menu_image_view);
+    	menu.add(0, MENU_CAMERA_VIEW, 0, R.string.menu_camera_view);
+    	return true;
+    }
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+    	Intent intent = null;
+        switch (item.getItemId()) {
+        case MENU_IMAGE_VIEW:
+        	intent = new Intent(this, ImageBackground.class);
+        	startActivity(intent);
+            return true;
+        case MENU_CAMERA_VIEW:
+        	intent = new Intent(this, CameraPreview.class);
+        	startActivity(intent);
+            return true;
+        }
+        return false;
+    }
+    
     
     /**
      * OnClickListener callback

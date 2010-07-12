@@ -12,14 +12,18 @@ public final class R {
     }
     public static final class drawable {
         public static final int icon=0x7f020000;
-        public static final int semc_poster=0x7f020001;
+        public static final int mark_a=0x7f020001;
+        public static final int red_markers=0x7f020002;
+        public static final int semc_poster=0x7f020003;
     }
     public static final class id {
-        public static final int label_search=0x7f050003;
-        public static final int label_translate=0x7f050000;
-        public static final int search_test=0x7f050004;
-        public static final int translate_test=0x7f050001;
-        public static final int translate_test_2=0x7f050002;
+        public static final int image_background_image_view=0x7f050001;
+        public static final int image_background_parent=0x7f050000;
+        public static final int label_search=0x7f050005;
+        public static final int label_translate=0x7f050002;
+        public static final int search_test=0x7f050006;
+        public static final int translate_test=0x7f050003;
+        public static final int translate_test_2=0x7f050004;
     }
     public static final class layout {
         public static final int image_background=0x7f030000;
@@ -29,6 +33,8 @@ public final class R {
         public static final int app_name=0x7f040001;
         public static final int google_search=0x7f040006;
         public static final int google_translate=0x7f040000;
+        public static final int menu_camera_view=0x7f040009;
+        public static final int menu_image_view=0x7f04000a;
         public static final int search_string=0x7f040008;
         public static final int start_search=0x7f040007;
         public static final int start_translate=0x7f040002;
